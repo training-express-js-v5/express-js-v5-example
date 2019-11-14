@@ -1,6 +1,6 @@
-# express-js-v5
+# express-js-v5-example
 
-express-js-v5
+express-js-v5-example
 
 ## First steps
 
@@ -100,7 +100,7 @@ This project is maintained by [Wolox](https://github.com/wolox) and it was writt
 
 ## License
 
-**express-js-v5** is available under the MIT [license](LICENSE.md).
+**express-js-v5-example** is available under the MIT [license](LICENSE.md).
 
     Copyright (c) 2019 Wolox
 

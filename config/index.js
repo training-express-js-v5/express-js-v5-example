@@ -38,12 +38,14 @@ const config = {
     },
     session: {
       header_name: 'authorization',
-      secret: process.env.NODE_API_SESSION_SECRET
+      secret: process.env.NODE_API_SESSION_SECRET,
+      documentationToken: process.env.DOCUMENTATION_TOKEN
     },
     headers: {
       apiDate: process.env.API_DATE || 'X-API-Date',
       packageVersion: process.env.PACKAGE_VERSION || 'X-Package-Version',
-      nodeVersion: process.env.NODE_VERSION || 'X-Node-Version'
+      nodeVersion: process.env.NODE_VERSION || 'X-Node-Version',
+      documentationTokenHeader: process.env.DOCUMENTATION_TOKEN_HEADER || 'X-documentation-token'
     }
   }
 };
