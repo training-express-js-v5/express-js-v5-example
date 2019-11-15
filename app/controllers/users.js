@@ -14,14 +14,14 @@ exports.signUp = ({ body }, res, next) =>
     })
     .catch(next);
 
-exports.logIn = ({ body: { username, password }, user }, res, next) =>
+exports.logIn = ({ body: { email, password }, user }, res, next) =>
   comparePassword(password, user.password)
     .then(validPassword => {
       if (!validPassword) {
         logger.error('Invalid password');
         throw errors.loginError('Username or password invalid');
       }
-      return generateToken({ user: username });
+      return generateToken({ email });
     })
     .then(token => res.send({ token }))
     .catch(next);

@@ -14,17 +14,20 @@ exports.authenticate = (req, _, next) => {
   if (!token) return next(authenticationError(AUTHENTICATION_ERROR_MSG));
   try {
     const decodeToken = validateToken(token);
-    return findBy({ username: decodeToken.user })
+    return findBy({ email: decodeToken.user })
       .then(user => {
         if (!user) return next(authenticationError(AUTHENTICATION_ERROR_MSG));
         logger.info(`User ${user.username} authenticated successfully`);
-        req.session = { ...user.dataValues };
+        req.user = { ...user.dataValues };
         return next();
       })
       .catch(next);
   } catch (err) {
-    if (err.name === 'TokenExpiredError') return next(authenticationError(TOKEN_EXPIRED_ERROR_MSG));
-    return next(authenticationError(INVALID_TOKEN_ERROR_MSG));
+    return next(
+      authenticationError(
+        err.name === 'TokenExpiredError' ? TOKEN_EXPIRED_ERROR_MSG : INVALID_TOKEN_ERROR_MSG
+      )
+    );
   }
 };
 
@@ -37,3 +40,6 @@ exports.checkUser = (req, _, next) =>
     req.user = user;
     next();
   });
+
+exports.checkAdminPermissions = ({ user }, _, next) =>
+  user.admin ? next() : next(authenticationError(AUTHENTICATION_ERROR_MSG));
