@@ -1,6 +1,6 @@
-# express-js-v5
+# plink-test
 
-express-js-v5
+Test to enter to Plink project
 
 ## First steps
 
@@ -14,9 +14,36 @@ Nvm approach is preferred.
 Run `npm install` or `yarn` from rootpath of the project.
 
 
+#### Database configuration
+
+Before running the app, make sure you have [postgresql installed](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-14-04) and a db created, to create it run the following steps inside a psql terminal:
+
+1. CREATE DATABASE db_project_name;
+2. \c db_project_name
+3. CREATE ROLE "project_name" LOGIN CREATEDB PASSWORD 'project_name';
+
+Then, set in `.env` some variables:
+
+- DB_HOST=localhost
+- DB_PORT=5432
+- DB_USERNAME=project_name
+- DB_PASSWORD=project_name
+- DB_NAME=db_project_name
+- DB_NAME_DEV=db_project_name_dev
+- DB_NAME_TEST=db_project_name_test
+- API_DATE=X-API-Date
+- PACKAGE_VERSION=X-Package-Version
+- NODE_VERSION=X-Node-Version
+
+### Migrations
+
+To create a migration, run `./node_modules/.bin/sequelize migration:create --name="my-migration-name" --config ./migrations/config.js --migrations-path ./migrations/migrations`.
+
+To run them, execute `npm run migrations`.
+
 #### Starting your app
 
-Now, we have two ways to start an app. To start your app in production mode run `npm start` in the root path of your project. To start your app in development mode (nodemon) run `npm run start-dev`. Then access your app at **localhost:port**. The port is logged in the console where you ran the start script.
+Now, to start your app run `npm start` in the rootpath of the project. Then access your app at **localhost:port**. The port is logged in the console where you ran the start script.
 
 ## Development
 
@@ -63,10 +90,16 @@ before in [Database configuration](#database-configuration). Also you need to ru
 testing database each time you have new ones, you can do this by running the command `npm run migrations-test`.
 Once you have all the above done you can run your tests with the following command: `npm test`. For more information refeer to the documentation of [Jest](https://jestjs.io/docs/en/getting-started).
 
+#### Factory Girl
+
+To simplify your tests, you can call the `factoryByModel('nameOfModel')` function in `factory_by_models.js` on your code, then, `factory.build('nameOfModel')` and it will define a json object with the attributes form the model you've passed as parameter taking random values. If you want to acceed to the object created, the vaules created will be on its `dataValues` field.
+Remember that you have to create a model before, and the `nameOfModel` will be the one you will have on the database (which is the first parameter on `sequelize.define()`).
+
+Also, it takes values predefined in the `type` field (Sequelize Datatype) and the validations you have in your MODEL (`validate` field),so if you want to validate those values on middlewares or somewhere else, factoryByModel won't take this in count. We strongly recommend to check if those validations cover the cases you expect, and if it doesn't, you can add your own code on this file (or just define a new factory).
 
 #### Debugging
 
-As we know, a NodeJS application is not something easy to debug and because of that we've added the `--inspect` flag to make it simpler. You can download a node inspection manager for Chrome, so Chrome DevTools will automatically start when you run your app using `npm run start-dev`, making your debugging easier. You can read more about the different inspector clients here: <https://nodejs.org/de/docs/guides/debugging-getting-started/#inspector-clients>
+As we know, a NodeJS application is not something easy to debug and because of that we've added the `--inspect` flag to make it simpler. Chrome DevTools will get started when running your app using the start script (`npm start`), making your debugging easier.
 
 #### REPL console
 
@@ -100,7 +133,7 @@ This project is maintained by [Wolox](https://github.com/wolox) and it was writt
 
 ## License
 
-**express-js-v5** is available under the MIT [license](LICENSE.md).
+**plink-test** is available under the MIT [license](LICENSE.md).
 
     Copyright (c) 2019 Wolox
 

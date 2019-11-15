@@ -1,8 +1,4 @@
 module.exports = {
-  userId: {
-    type: 'integer',
-    example: 7
-  },
   username: {
     type: 'string',
     example: 'tom99'
@@ -22,17 +18,6 @@ module.exports = {
       },
       email: {
         $ref: '#/components/schemas/userEmail'
-      }
-    }
-  },
-  Users: {
-    type: 'object',
-    properties: {
-      users: {
-        type: 'array',
-        items: {
-          $ref: '#/components/schemas/User'
-        }
       }
     }
   }

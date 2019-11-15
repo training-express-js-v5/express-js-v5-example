@@ -1,26 +1,26 @@
 const ENVIRONMENT = process.env.NODE_ENV || 'development';
+const dotenv = require('dotenv');
 
-// eslint-disable-next-line global-require
-if (ENVIRONMENT !== 'production') require('dotenv').config();
+if (ENVIRONMENT !== 'production') dotenv.config();
 
 const configFile = `./${ENVIRONMENT}`;
 
 const isObject = variable => variable instanceof Object;
 
 /*
- * Deep immutable copy of source object into tarjet object and returns a new object.
+ * Deep copy of source object into tarjet object.
+ * It does not overwrite properties.
  */
-const deepMerge = (target, source) => {
-  if (isObject(target) && isObject(source)) {
-    return Object.keys(source).reduce(
-      (output, key) => ({
-        ...output,
-        [key]: isObject(source[key]) && key in target ? deepMerge(target[key], source[key]) : source[key]
-      }),
-      { ...target }
-    );
+// eslint-disable-next-line consistent-return
+const assignObject = (target, source) => {
+  if (target && isObject(target) && source && isObject(source)) {
+    Object.keys(source).forEach(key => {
+      if (!Object.prototype.hasOwnProperty.call(target, key) || target[key] === undefined) {
+        target[key] = source[key];
+      } else assignObject(target[key], source[key]);
+    });
+    return target;
   }
-  return target;
 };
 
 const config = {
@@ -38,7 +38,8 @@ const config = {
     },
     session: {
       header_name: 'authorization',
-      secret: process.env.NODE_API_SESSION_SECRET
+      secret: process.env.NODE_API_SESSION_SECRET,
+      expirationTime: process.env.SESSION_EXPIRATION_TIME
     },
     headers: {
       apiDate: process.env.API_DATE || 'X-API-Date',
@@ -49,4 +50,4 @@ const config = {
 };
 
 const customConfig = require(configFile).config;
-module.exports = deepMerge(config, customConfig);
+module.exports = assignObject(customConfig, config);

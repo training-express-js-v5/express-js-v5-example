@@ -8,8 +8,8 @@ module.exports = {
   openapi: '3.0.1',
   info: {
     version: '0.1.0',
-    title: 'express-js-v5',
-    description: 'express-js-v5',
+    title: 'plink-test',
+    description: 'plink-test',
     termsOfService: '',
     contact: {
       name: 'Wolox',

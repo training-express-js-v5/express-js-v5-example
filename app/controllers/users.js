@@ -1,0 +1,27 @@
+const logger = require('../logger');
+const errors = require('../errors');
+const { userSerializer } = require('../serializers/users');
+const { createUser } = require('../services/users');
+const { encryptPassword, comparePassword } = require('../helpers/users');
+const { generateToken } = require('../helpers/token');
+
+exports.signUp = ({ body }, res, next) =>
+  encryptPassword(body.password)
+    .then(hash => createUser({ ...body, password: hash }))
+    .then(createdUser => {
+      logger.info(`The user ${createdUser.name} was created successfully`);
+      return res.send(userSerializer(createdUser));
+    })
+    .catch(next);
+
+exports.logIn = ({ body: { username, password }, user }, res, next) =>
+  comparePassword(password, user.password)
+    .then(validPassword => {
+      if (!validPassword) {
+        logger.error('Invalid password');
+        throw errors.loginError('Username or password invalid');
+      }
+      return generateToken({ user: username });
+    })
+    .then(token => res.send({ token }))
+    .catch(next);

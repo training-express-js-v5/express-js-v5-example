@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 const repl = require('repl');
 const fs = require('fs');
-
+const models = require('./app/models');
 const pjson = require('./package.json');
 
 const convertFunctionToAsync = f => async (...args) => {
@@ -24,6 +24,7 @@ Promise.resolve().then(() => {
   const replServer = repl.start({
     prompt: `${pjson.name}> `
   });
+  replServer.context.models = models;
   const servicesPath = './app/services/';
   fs.readdir(servicesPath, (err, files) => {
     files.forEach(file => {

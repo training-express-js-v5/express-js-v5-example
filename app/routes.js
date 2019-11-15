@@ -1,9 +1,11 @@
-// const controller = require('./controllers/controller');
 const { healthCheck } = require('./controllers/healthCheck');
+const users = require('./controllers/users');
+const schemaValidator = require('./middlewares/schemas_validator');
+const { userSignUpSchema, userLogInSchema } = require('./schemas/users');
+const { checkUser } = require('./middlewares/authentication');
 
 exports.init = app => {
   app.get('/health', healthCheck);
-  // app.get('/endpoint/get/path', [], controller.methodGET);
-  // app.put('/endpoint/put/path', [], controller.methodPUT);
-  // app.post('/endpoint/post/path', [], controller.methodPOST);
+  app.post('/users', [schemaValidator(userSignUpSchema)], users.signUp);
+  app.post('/users/login', [schemaValidator(userLogInSchema), checkUser], users.logIn);
 };
