@@ -1,0 +1,1 @@
+exports.MAX_WEET_LENGTH = 140;

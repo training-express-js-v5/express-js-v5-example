@@ -10,9 +10,6 @@ module.exports = {
   User: {
     type: 'object',
     properties: {
-      id: {
-        $ref: '#/components/schemas/userId'
-      },
       username: {
         $ref: '#/components/schemas/username'
       },
