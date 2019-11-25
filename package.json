@@ -9,7 +9,7 @@
   "scripts": {
     "console": "node console.js",
     "cover": "NODE_ENV=testing jest --coverage --runInBand --forceExit test/app",
-    "test": "NODE_ENV=testing jest test/app --runInBand --forceExit",
+    "test": "NODE_ENV=testing jest --runInBand --forceExit --detectOpenHandles",
     "test-inspect": "NODE_ENV=testing node --inspect --debug-brk jest test/app.spec.js",
     "eslint-check": "eslint --print-config .eslintrc.js --ignore-pattern ./.eslintrc.js | eslint-config-prettier-check",
     "lint": "eslint \"**/*.js\" --ignore-pattern ./.eslintrc.js",
@@ -60,7 +60,8 @@
     "testEnvironment": "node",
     "transform": {
       "^.+\\.js$": "babel-jest"
-    }
+    },
+    "testRunner": "jest-circus/runner"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -92,6 +93,7 @@
     "husky": "^0.14.3",
     "istanbul": "^0.4.3",
     "jest": "^24.0.0",
+    "jest-circus": "^24.9.0",
     "mocha": "^5.0.1",
     "mocha-lcov-reporter": "^1.2.0",
     "nodemon": "^1.18.7",
