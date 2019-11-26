@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const user = sequelize.define(
+  const User = sequelize.define(
     'users',
     {
       name: {
@@ -22,9 +22,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       timestamps: true,
-      freezeTableName: true,
       underscored: true
     }
   );
-  return user;
+  User.associate = models => {
+    User.hasMany(models.weets, { as: 'weets', foreignKey: 'userId' });
+  };
+  return User;
 };

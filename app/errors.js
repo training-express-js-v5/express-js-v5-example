@@ -23,3 +23,6 @@ exports.loginError = message => internalError(message, exports.LOGIN_ERROR);
 
 exports.AUTHENTICATION_ERROR = 'authentication_error';
 exports.authenticationError = message => internalError(message, exports.AUTHENTICATION_ERROR);
+
+exports.NUMBERS_API_ERROR = 'numbers_api_error';
+exports.numbersApiError = message => internalError(message, exports.NUMBERS_API_ERROR);

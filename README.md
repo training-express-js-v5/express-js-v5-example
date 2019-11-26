@@ -35,7 +35,7 @@ Then, set in `.env` some variables:
 
 ### Migrations
 
-To create a migration, run `./node_modules/.bin/sequelize migration:create --name="my-migration-name" --config ./migrations/config.js --migrations-path ./migrations/migrations`.
+To create a migration, run `npm run create-migration -- --name="my-migration-name"`.
 
 To run them, execute `npm run migrations`.
 

@@ -13,8 +13,8 @@ exports.authenticate = (req, _, next) => {
   const token = req.headers[header_name];
   if (!token) return next(authenticationError(AUTHENTICATION_ERROR_MSG));
   try {
-    const decodeToken = validateToken(token);
-    return findBy({ email: decodeToken.user })
+    const decodeToken = validateToken(token.split(' ')[1]);
+    return findBy({ email: decodeToken.email })
       .then(user => {
         if (!user) return next(authenticationError(AUTHENTICATION_ERROR_MSG));
         logger.info(`User ${user.username} authenticated successfully`);
