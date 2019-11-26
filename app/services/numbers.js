@@ -1,6 +1,6 @@
-const { inspect } = require('util');
-
 const rp = require('request-promise');
+
+const { inspect } = require('util');
 
 const logger = require('../logger');
 const { numbersApiError } = require('../errors');

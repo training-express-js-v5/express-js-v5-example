@@ -8,4 +8,4 @@ exports.INVALID_PASSWORD_LENGTH_ERROR = 'Password should have at least 8 charact
 exports.AUTHENTICATION_ERROR_MSG = 'User no authenticated';
 exports.INVALID_TOKEN_ERROR_MSG = 'Invalid token';
 exports.TOKEN_EXPIRED_ERROR_MSG = 'Token expired';
-exports.NUMBERS_API_ERROR = 'Error when trying to obtain data';
+exports.NUMBERS_API_ERROR = 'Error when trying to obtain data from numbers api';

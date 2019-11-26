@@ -65,8 +65,8 @@ describe('Module controllers', () => {
         it('Internal code must be numbers_api_error', () => {
           expect(response.body.internal_code).toBe('numbers_api_error');
         });
-        it('Message must be Error when trying to obtain data', () => {
-          expect(response.body.message).toBe('Error when trying to obtain data');
+        it('Message must be Error when trying to obtain data from numbers api', () => {
+          expect(response.body.message).toBe('Error when trying to obtain data from numbers api');
         });
       });
       describe('Failure because token is missing', () => {
