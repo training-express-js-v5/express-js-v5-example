@@ -5,13 +5,7 @@ const { mockSuccessRequest, mockFailedRequest } = require('../mocks/request');
 const Weet = require('../../app/models').weets;
 const User = require('../../app/models').users;
 const { getResponse, truncateDatabase } = require('../helpers/app');
-
-const requestWeetsByPages = (limit, page) =>
-  getResponse({
-    endpoint: `/weets?limit=${limit}&page=${page}`,
-    method: 'get',
-    header: { authorization: 'Bearer token' }
-  });
+const { requestWeetsByPages } = require('../helpers/mappers');
 
 describe('Module controllers', () => {
   describe('POST weets', () => {
