@@ -9,6 +9,6 @@ exports.create = ({ user }, res, next) =>
     .catch(next);
 
 exports.getAll = (req, res, next) =>
-  getAllWeets(req.query.limit)
+  getAllWeets(req.query.limit, req.query.page)
     .then(weets => res.send(weets))
     .catch(next);

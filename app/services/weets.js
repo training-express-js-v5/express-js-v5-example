@@ -10,8 +10,8 @@ exports.createWeet = newWeet =>
     throw errors.databaseError('Error when trying to create weet');
   });
 
-exports.getAllWeets = limit =>
-  Weet.findAll({ limit }).catch(error => {
+exports.getAllWeets = (limit, page) =>
+  Weet.findAll({ offset: (page - 1) * limit || 0, limit }).catch(error => {
     logger.error(inspect(error));
     throw errors.databaseError('Error when trying to get weets');
   });

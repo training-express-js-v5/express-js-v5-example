@@ -6,6 +6,13 @@ const Weet = require('../../app/models').weets;
 const User = require('../../app/models').users;
 const { getResponse, truncateDatabase } = require('../helpers/app');
 
+const requestWeetsByPages = (limit, page) =>
+  getResponse({
+    endpoint: `/weets?limit=${limit}&page=${page}`,
+    method: 'get',
+    header: { authorization: 'Bearer token' }
+  });
+
 describe('Module controllers', () => {
   describe('POST weets', () => {
     describe('Successfully cases', () => {
@@ -117,6 +124,129 @@ describe('Module controllers', () => {
         });
         it('Message must be User no authenticated', () => {
           expect(response.body.message).toBe('User no authenticated');
+        });
+      });
+    });
+  });
+
+  describe('GET weets', () => {
+    describe('Successfully cases', () => {
+      let response = {};
+      beforeAll(async () => {
+        successDecode({ email: 'fake@domain.com' });
+        await create({ ...user(), email: 'fake@domain.com' });
+        const weetsQuantity = 10;
+        for (let i = 0; i < weetsQuantity; i++) {
+          successDecode({ email: 'fake@domain.com' });
+          await mockSuccessRequest('This is a random fact');
+          await getResponse({
+            endpoint: '/weets',
+            method: 'post',
+            header: { authorization: 'Bearer token' }
+          });
+        }
+      });
+      afterAll(() => truncateDatabase());
+      describe('Get weets successfully', () => {
+        afterAll(() => truncateDatabase());
+        it('The response status code must be 200', async () => {
+          successDecode({ email: 'fake@domain.com' });
+          response = await requestWeetsByPages(2, 1);
+          expect(response.statusCode).toBe(200);
+        });
+        it('Response should have 2 weets besides there will be 10', async () => {
+          successDecode({ email: 'fake@domain.com' });
+          response = await requestWeetsByPages(2, 1);
+          expect(response.body.length).toBe(2);
+        });
+        it('Response should have 2 weets besides there will be 10, limit can be a string', async () => {
+          successDecode({ email: 'fake@domain.com' });
+          response = await requestWeetsByPages('2', 1);
+          expect(response.body.length).toBe(2);
+        });
+        it('Response should have 2 weets besides there will be 10, page can be a string', async () => {
+          successDecode({ email: 'fake@domain.com' });
+          response = await requestWeetsByPages(2, '1');
+          expect(response.body.length).toBe(2);
+        });
+        it('Response should have 2 weets besides there will be 10', async () => {
+          successDecode({ email: 'fake@domain.com' });
+          response = await requestWeetsByPages(2, 3);
+          expect(response.body[0].id).toBe(5);
+          expect(response.body[1].id).toBe(6);
+          expect(response.body.length).toBe(2);
+        });
+      });
+    });
+    describe('Failure cases', () => {
+      describe('Authentication fails', () => {
+        afterAll(() => truncateDatabase());
+        it('The response status code must be 422 because validation of pagination failed', async () => {
+          const response = await requestWeetsByPages(2, 1);
+          expect(response.statusCode).toBe(401);
+          expect(response.body.message).toBe('User no authenticated');
+        });
+      });
+      describe('Pagination fails', () => {
+        let response = {};
+        beforeAll(async () => {
+          successDecode({ email: 'fake@domain.com' });
+          await create({ ...user(), email: 'fake@domain.com' });
+          const weetsQuantity = 10;
+          for (let i = 0; i < weetsQuantity; i++) {
+            successDecode({ email: 'fake@domain.com' });
+            await mockSuccessRequest('This is a random fact');
+            await getResponse({
+              endpoint: '/weets',
+              method: 'post',
+              header: { authorization: 'Bearer token' }
+            });
+          }
+        });
+        afterAll(() => truncateDatabase());
+        it('Limit has to be greater then 0', async () => {
+          successDecode({ email: 'fake@domain.com' });
+          response = await requestWeetsByPages(0, 1);
+          expect(response.statusCode).toBe(422);
+          expect(response.body.message.errors[0].msg).toBe(
+            'Limit can not be less than one and has to be a number.'
+          );
+        });
+        it('Limit has to be a number', async () => {
+          successDecode({ email: 'fake@domain.com' });
+          response = await requestWeetsByPages('a', 1);
+          expect(response.statusCode).toBe(422);
+          expect(response.body.message.errors[0].msg).toBe(
+            'Limit can not be less than one and has to be a number.'
+          );
+        });
+        it('Limit has to be a number', async () => {
+          successDecode({ email: 'fake@domain.com' });
+          response = await requestWeetsByPages('', 1);
+          expect(response.statusCode).toBe(422);
+          expect(response.body.message.errors[0].msg).toBe('Limit is a required parameter.');
+        });
+        it('Page has to be greater then 0', async () => {
+          successDecode({ email: 'fake@domain.com' });
+          response = await requestWeetsByPages(1, 0);
+          expect(response.statusCode).toBe(422);
+          expect(response.body.message.errors[0].msg).toBe(
+            'Page can not be less than one and has to be a number.'
+          );
+        });
+        it('Page has to be a number', async () => {
+          successDecode({ email: 'fake@domain.com' });
+          response = await requestWeetsByPages(1, 'a');
+          expect(response.statusCode).toBe(422);
+          expect(response.body.message.errors[0].msg).toBe(
+            'Page can not be less than one and has to be a number.'
+          );
+        });
+        it('Page has to be a number', async () => {
+          successDecode({ email: 'fake@domain.com' });
+          response = await requestWeetsByPages(1, '');
+          expect(response.statusCode).toBe(422);
+          expect(response.body.message.errors[0].msg).toBe('Page is a required parameter.');
         });
       });
     });

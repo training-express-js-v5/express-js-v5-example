@@ -9,3 +9,5 @@ exports.AUTHENTICATION_ERROR_MSG = 'User no authenticated';
 exports.INVALID_TOKEN_ERROR_MSG = 'Invalid token';
 exports.TOKEN_EXPIRED_ERROR_MSG = 'Token expired';
 exports.NUMBERS_API_ERROR = 'Error when trying to obtain data from numbers api';
+exports.REQUIRED_LIMIT_ERROR = 'Limit is a required parameter.';
+exports.REQUIRED_PAGE_ERROR = 'Page is a required parameter.';
