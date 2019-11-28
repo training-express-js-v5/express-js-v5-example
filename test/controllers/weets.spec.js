@@ -9,7 +9,7 @@ const { requestWeetsByPages } = require('../helpers/mappers');
 
 describe('Module controllers', () => {
   describe('POST weets', () => {
-    describe('Successfully cases', () => {
+    describe('Successfull cases', () => {
       describe('Create weet successfully', () => {
         let newWeet = {};
         let response = {};
@@ -124,7 +124,7 @@ describe('Module controllers', () => {
   });
 
   describe('GET weets', () => {
-    describe('Successfully cases', () => {
+    describe('Successfull cases', () => {
       let response = {};
       beforeAll(async () => {
         successDecode({ email: 'fake@domain.com' });
