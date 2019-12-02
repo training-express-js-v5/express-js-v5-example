@@ -1,12 +1,21 @@
 const faker = require('faker');
 
-exports.user = () => ({
-  name: faker.name.firstName,
-  password: faker.internet.password,
-  email: faker.internet.email,
-  lastName: faker.name.lastName
+const user = () => ({
+  name: faker.name.firstName(),
+  password: '12345678Aa',
+  email: faker.internet.email(),
+  lastName: faker.name.lastName()
 });
 
-exports.weet = () => ({
+const weet = () => ({
   content: faker.lorem.sentence()
 });
+
+module.exports = {
+  email: faker.internet.email,
+  name: faker.name.firstName,
+  lastName: faker.name.lastName,
+  password: faker.internet.password,
+  user,
+  weet
+};
