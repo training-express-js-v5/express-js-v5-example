@@ -1,5 +1,6 @@
 const { create } = require('../factory/users');
 const { successDecode } = require('../mocks/jwt');
+const createWeet = require('../factory/weets').create;
 const { user } = require('../helpers/faker');
 const { mockSuccessRequest, mockFailedRequest } = require('../mocks/request');
 const Weet = require('../../app/models').weets;
@@ -129,41 +130,25 @@ describe('Module controllers', () => {
       beforeAll(async () => {
         successDecode({ email: 'fake@domain.com' });
         await create({ ...user(), email: 'fake@domain.com' });
-        const weetsQuantity = 10;
+        const weetsQuantity = 15;
         for (let i = 0; i < weetsQuantity; i++) {
-          successDecode({ email: 'fake@domain.com' });
-          await mockSuccessRequest('This is a random fact');
-          await getResponse({
-            endpoint: '/weets',
-            method: 'post',
-            header: { authorization: 'Bearer token' }
-          });
+          await createWeet();
         }
       });
-      afterAll(() => truncateDatabase());
       describe('Get weets successfully', () => {
         afterAll(() => truncateDatabase());
         it('The response status code must be 200', async () => {
           successDecode({ email: 'fake@domain.com' });
           response = await requestWeetsByPages(2, 1);
           expect(response.statusCode).toBe(200);
-        });
-        it('Response should have 2 weets besides there will be 10', async () => {
-          successDecode({ email: 'fake@domain.com' });
-          response = await requestWeetsByPages(2, 1);
           expect(response.body.length).toBe(2);
         });
-        it('Response should have 2 weets besides there will be 10, limit can be a string', async () => {
+        it('Response should have 10 weets because limit default is 10', async () => {
           successDecode({ email: 'fake@domain.com' });
-          response = await requestWeetsByPages('2', 1);
-          expect(response.body.length).toBe(2);
+          response = await requestWeetsByPages();
+          expect(response.body.length).toBe(10);
         });
-        it('Response should have 2 weets besides there will be 10, page can be a string', async () => {
-          successDecode({ email: 'fake@domain.com' });
-          response = await requestWeetsByPages(2, '1');
-          expect(response.body.length).toBe(2);
-        });
-        it('Response should have 2 weets besides there will be 10', async () => {
+        it('Response should have 2 weets and with the 3rd page there will be id 5 and 6', async () => {
           successDecode({ email: 'fake@domain.com' });
           response = await requestWeetsByPages(2, 3);
           expect(response.body[0].id).toBe(5);
@@ -175,7 +160,7 @@ describe('Module controllers', () => {
     describe('Failure cases', () => {
       describe('Authentication fails', () => {
         afterAll(() => truncateDatabase());
-        it('The response status code must be 422 because validation of pagination failed', async () => {
+        it('The response status code must be 401 because validation of pagination failed', async () => {
           const response = await requestWeetsByPages(2, 1);
           expect(response.statusCode).toBe(401);
           expect(response.body.message).toBe('User no authenticated');
@@ -200,7 +185,7 @@ describe('Module controllers', () => {
         afterAll(() => truncateDatabase());
         it('Limit has to be greater then 0', async () => {
           successDecode({ email: 'fake@domain.com' });
-          response = await requestWeetsByPages(0, 1);
+          response = await requestWeetsByPages('0', 1);
           expect(response.statusCode).toBe(422);
           expect(response.body.message.errors[0].msg).toBe(
             'Limit can not be less than one and has to be a number.'
@@ -214,15 +199,9 @@ describe('Module controllers', () => {
             'Limit can not be less than one and has to be a number.'
           );
         });
-        it('Limit has to be a number', async () => {
-          successDecode({ email: 'fake@domain.com' });
-          response = await requestWeetsByPages('', 1);
-          expect(response.statusCode).toBe(422);
-          expect(response.body.message.errors[0].msg).toBe('Limit is a required parameter.');
-        });
         it('Page has to be greater then 0', async () => {
           successDecode({ email: 'fake@domain.com' });
-          response = await requestWeetsByPages(1, 0);
+          response = await requestWeetsByPages(1, '0');
           expect(response.statusCode).toBe(422);
           expect(response.body.message.errors[0].msg).toBe(
             'Page can not be less than one and has to be a number.'
@@ -235,12 +214,6 @@ describe('Module controllers', () => {
           expect(response.body.message.errors[0].msg).toBe(
             'Page can not be less than one and has to be a number.'
           );
-        });
-        it('Page has to be a number', async () => {
-          successDecode({ email: 'fake@domain.com' });
-          response = await requestWeetsByPages(1, '');
-          expect(response.statusCode).toBe(422);
-          expect(response.body.message.errors[0].msg).toBe('Page is a required parameter.');
         });
       });
     });
