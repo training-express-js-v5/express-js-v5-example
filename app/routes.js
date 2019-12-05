@@ -12,4 +12,5 @@ exports.init = app => {
   app.post('/users/login', [schemaValidator(userLogInSchema), checkUser], users.logIn);
   app.post('/weets', authenticate, weets.create);
   app.get('/weets', [authenticate, schemaValidator(paginationSchema)], weets.getAll);
+  app.post('/weets/rate', authenticate, weets.rate);
 };
