@@ -1,12 +1,11 @@
 const { create } = require('../factory/users');
 const { successDecode } = require('../mocks/jwt');
-const createWeet = require('../factory/weets').create;
 const { user } = require('../helpers/faker');
 const { mockSuccessRequest, mockFailedRequest } = require('../mocks/request');
 const Weet = require('../../app/models').weets;
 const User = require('../../app/models').users;
 const { getResponse, truncateDatabase } = require('../helpers/app');
-const { requestWeetsByPages } = require('../helpers/mappers');
+const { requestWeetsByPages, createWeetsByQuantity } = require('../helpers/mappers');
 
 describe('Module controllers', () => {
   describe('POST weets', () => {
@@ -134,10 +133,7 @@ describe('Module controllers', () => {
       beforeAll(async () => {
         successDecode({ email: 'fake@domain.com' });
         await create({ ...user(), email: 'fake@domain.com' });
-        const weetsQuantity = 15;
-        for (let i = 0; i < weetsQuantity; i++) {
-          await createWeet();
-        }
+        await createWeetsByQuantity(15);
         successDecode({ email: 'fake@domain.com' });
         response = await requestWeetsByPages(body.limit, body.page);
       });
