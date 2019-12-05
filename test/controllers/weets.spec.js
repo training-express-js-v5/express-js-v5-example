@@ -1,21 +1,26 @@
 const { create } = require('../factory/users');
+const createManyWeets = require('../factory/weets').createMany;
 const { successDecode } = require('../mocks/jwt');
-const { user } = require('../helpers/faker');
+const { build } = require('../factory/users');
 const { mockSuccessRequest, mockFailedRequest } = require('../mocks/request');
 const Weet = require('../../app/models').weets;
 const User = require('../../app/models').users;
 const { getResponse, truncateDatabase } = require('../helpers/app');
-const { requestWeetsByPages, createWeetsByQuantity } = require('../helpers/mappers');
+const { requestWeetsByPages } = require('../helpers/mappers');
 
 describe('Module controllers', () => {
   describe('POST weets', () => {
-    describe('Successfull cases', () => {
+    let user = {};
+    beforeAll(async () => {
+      user = await build({ password: '12345678Aa' });
+    });
+    describe('Successfully cases', () => {
       describe('Create weet successfully', () => {
         let newWeet = {};
         let response = {};
         beforeAll(async () => {
           successDecode({ email: 'fake@domain.com' });
-          const { id } = await create({ ...user(), email: 'fake@domain.com' });
+          const { id } = await create({ ...user.dataValues, email: 'fake@domain.com' });
           await mockSuccessRequest('This is a random fact');
           response = await getResponse({
             endpoint: '/weets',
@@ -44,7 +49,7 @@ describe('Module controllers', () => {
         let newWeet = {};
         beforeAll(async () => {
           successDecode({ email: 'fake@domain.com' });
-          await create({ ...user(), email: 'fake@domain.com' });
+          await create({ ...user.dataValues, email: 'fake@domain.com' });
           await mockFailedRequest({
             message: 'Numbers api is down',
             statusCode: 500
@@ -131,9 +136,10 @@ describe('Module controllers', () => {
     ])('Successfull cases', (body, length, firstId, secondId) => {
       let response = {};
       beforeAll(async () => {
+        const user = await build({ password: '12345678Aa' });
         successDecode({ email: 'fake@domain.com' });
-        await create({ ...user(), email: 'fake@domain.com' });
-        await createWeetsByQuantity(15);
+        await create({ ...user.dataValues, email: 'fake@domain.com' });
+        await createManyWeets(15);
         successDecode({ email: 'fake@domain.com' });
         response = await requestWeetsByPages(body.limit, body.page);
       });
@@ -164,18 +170,10 @@ describe('Module controllers', () => {
       ])('Pagination fails', (body, message) => {
         let response = {};
         beforeAll(async () => {
+          const user = await build({ password: '12345678Aa' });
           successDecode({ email: 'fake@domain.com' });
-          await create({ ...user(), email: 'fake@domain.com' });
-          const weetsQuantity = 10;
-          for (let i = 0; i < weetsQuantity; i++) {
-            successDecode({ email: 'fake@domain.com' });
-            await mockSuccessRequest('This is a random fact');
-            await getResponse({
-              endpoint: '/weets',
-              method: 'post',
-              header: { authorization: 'Bearer token' }
-            });
-          }
+          await create({ ...user.dataValues, email: 'fake@domain.com' });
+          await createManyWeets(15);
           successDecode({ email: 'fake@domain.com' });
           response = await requestWeetsByPages(body.limit, body.page);
         });

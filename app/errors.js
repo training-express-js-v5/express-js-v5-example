@@ -18,7 +18,7 @@ exports.hashError = message => internalError(message, exports.HASH_ERROR);
 exports.SCHEMA_ERROR = 'schema_error';
 exports.schemaError = message => internalError(message, exports.SCHEMA_ERROR);
 
-exports.LOGIN_ERROR = 'user_signin_error';
+exports.LOGIN_ERROR = 'user_sign_in_error';
 exports.loginError = message => internalError(message, exports.LOGIN_ERROR);
 
 exports.AUTHENTICATION_ERROR = 'authentication_error';

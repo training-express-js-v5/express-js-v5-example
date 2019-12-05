@@ -8,5 +8,6 @@ factoryByModel(modelName, false);
 
 module.exports = {
   create: () => factory.create(modelName, { userId: 1 }),
-  build: () => factory.build(modelName)
+  build: () => factory.build(modelName),
+  createMany: quantity => factory.createMany(modelName, quantity, { userId: 1 })
 };
