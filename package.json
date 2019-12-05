@@ -64,7 +64,7 @@
     "testRunner": "jest-circus/runner"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^3.0.7",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-validator": "^6.2.0",
@@ -89,7 +89,6 @@
     "eslint-config-wolox-node": "^2.0.0",
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-prettier": "^3.0.1",
-    "faker": "^4.1.0",
     "husky": "^0.14.3",
     "istanbul": "^0.4.3",
     "jest": "^24.0.0",

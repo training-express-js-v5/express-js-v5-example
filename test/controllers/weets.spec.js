@@ -1,6 +1,6 @@
 const { create } = require('../factory/users');
 const { successDecode } = require('../mocks/jwt');
-const { user } = require('../helpers/faker');
+const { build } = require('../factory/users');
 const { mockSuccessRequest, mockFailedRequest } = require('../mocks/request');
 const Weet = require('../../app/models').weets;
 const User = require('../../app/models').users;
@@ -8,13 +8,17 @@ const { getResponse, truncateDatabase } = require('../helpers/app');
 
 describe('Module controllers', () => {
   describe('POST weets', () => {
+    let user = {};
+    beforeAll(async () => {
+      user = await build({ password: '12345678Aa' });
+    });
     describe('Successfully cases', () => {
       describe('Create weet successfully', () => {
         let newWeet = {};
         let response = {};
         beforeAll(async () => {
           successDecode({ email: 'fake@domain.com' });
-          const { id } = await create({ ...user(), email: 'fake@domain.com' });
+          const { id } = await create({ ...user.dataValues, email: 'fake@domain.com' });
           await mockSuccessRequest('This is a random fact');
           response = await getResponse({
             endpoint: '/weets',
@@ -43,7 +47,7 @@ describe('Module controllers', () => {
         let newWeet = {};
         beforeAll(async () => {
           successDecode({ email: 'fake@domain.com' });
-          await create({ ...user(), email: 'fake@domain.com' });
+          await create({ ...user.dataValues, email: 'fake@domain.com' });
           await mockFailedRequest({
             message: 'Numbers api is down',
             statusCode: 500
