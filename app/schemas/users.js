@@ -45,27 +45,16 @@ exports.userSignUpSchema = {
 };
 
 exports.userLogInSchema = {
-  email: {
+  code: {
     in: ['body'],
+    // isString: {
+    //   negated: true,
+    //   errorMessage: errors.INVALID_CODE_ERROR
+    // },
     isEmpty: {
       negated: true,
-      errorMessage: errors.REQUIRED_EMAIL_ERROR
+      errorMessage: errors.REQUIRED_CODE_ERROR
     },
-    trim: true,
-    isEmail: true,
-    errorMessage: errors.INVALID_EMAIL_ERROR
-  },
-  password: {
-    in: ['body'],
-    isEmpty: {
-      negated: true,
-      errorMessage: errors.REQUIRED_PASSWORD_ERROR
-    },
-    isLength: {
-      options: { min: 8, max: 30 },
-      errorMessage: errors.INVALID_PASSWORD_LENGTH_ERROR
-    },
-    isAlphanumeric: true,
-    errorMessage: errors.INVALID_PASSWORD_ERROR
+    trim: true
   }
 };

@@ -26,3 +26,6 @@ exports.authenticationError = message => internalError(message, exports.AUTHENTI
 
 exports.NUMBERS_API_ERROR = 'numbers_api_error';
 exports.numbersApiError = message => internalError(message, exports.NUMBERS_API_ERROR);
+
+exports.AUTH0_SIGN_IN_ERROR = 'auth0_sign_in_error';
+exports.auth0SignInError = message => internalError(message, exports.AUTH0_SIGN_IN_ERROR);
