@@ -48,6 +48,13 @@ const config = {
     },
     apiNumbers: {
       url: process.env.API_NUMBERS_URL
+    },
+    auth0: {
+      domain: process.env.AUTH0_DOMAIN,
+      clientId: process.env.AUTH0_CLIENT_ID,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET,
+      grantType: process.env.AUTH0_GRANT_TYPE || 'authorization_code',
+      audience: process.env.AUTH0_AUDIENCE
     }
   }
 };

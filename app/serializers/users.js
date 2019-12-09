@@ -1,5 +1,5 @@
-exports.userSerializer = ({ lastName, name, username }) => ({
+exports.userSerializer = ({ lastName, name, email }) => ({
   name,
-  username,
+  email,
   lastName
 });

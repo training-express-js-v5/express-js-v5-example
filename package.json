@@ -64,13 +64,17 @@
     "testRunner": "jest-circus/runner"
   },
   "dependencies": {
+    "auth0": "^2.20.0",
     "bcrypt": "^3.0.7",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "express-jwt": "^5.3.1",
+    "express-jwt-authz": "^2.3.1",
     "express-validator": "^6.2.0",
     "express-wolox-logger": "1.1.0",
     "factory-girl": "^5.0.4",
     "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^1.6.0",
     "pg": "^7.12.1",
     "request-promise": "^4.2.5",
     "sequelize": "^5.10.1",

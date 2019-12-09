@@ -1,17 +1,19 @@
 const errors = require('../errors');
 const logger = require('../logger');
+const { camelCaseToSnakeCase } = require('../helpers/strings');
 
 const DEFAULT_STATUS_CODE = 500;
 
 const statusCodes = {
-  [errors.DATABASE_ERROR]: 503,
-  [errors.DEFAULT_ERROR]: 500,
   [errors.USER_SIGNUP_ERROR]: 401,
-  [errors.HASH_ERROR]: 500,
-  [errors.SCHEMA_ERROR]: 422,
-  [errors.LOGIN_ERROR]: 401,
   [errors.AUTHENTICATION_ERROR]: 401,
-  [errors.NUMBERS_API_ERROR]: 500
+  [errors.LOGIN_ERROR]: 401,
+  [errors.SCHEMA_ERROR]: 422,
+  [errors.DEFAULT_ERROR]: 500,
+  [errors.HASH_ERROR]: 500,
+  [errors.NUMBERS_API_ERROR]: 500,
+  [errors.AUTH0_SIGN_IN_ERROR]: 500,
+  [errors.DATABASE_ERROR]: 503
 };
 
 exports.handle = (error, req, res, next) => {
@@ -19,8 +21,12 @@ exports.handle = (error, req, res, next) => {
   else {
     // Unrecognized error, notifying it to rollbar.
     next(error);
-    res.status(DEFAULT_STATUS_CODE);
+    res.status(error.status || DEFAULT_STATUS_CODE);
   }
   logger.error(error);
-  return res.send({ message: error.message, internal_code: error.internalCode });
+  const internalCode = error.internalCode || camelCaseToSnakeCase(error.name);
+  return res.send({
+    message: error.message,
+    internal_code: internalCode
+  });
 };

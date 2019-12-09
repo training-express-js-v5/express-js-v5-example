@@ -1,9 +1,10 @@
 const logger = require('../logger');
-const errors = require('../errors');
+// const errors = require('../errors');
 const { userSerializer } = require('../serializers/users');
+const { encryptPassword } = require('../services/bcrypt');
+// const { generateToken } = require('../helpers/token');
+const { getToken } = require('../services/auth0');
 const { createUser } = require('../services/users');
-const { encryptPassword, comparePassword } = require('../services/bcrypt');
-const { generateToken } = require('../helpers/token');
 
 exports.signUp = ({ body }, res, next) =>
   encryptPassword(body.password)
@@ -14,14 +15,7 @@ exports.signUp = ({ body }, res, next) =>
     })
     .catch(next);
 
-exports.logIn = ({ body: { email, password }, user }, res, next) =>
-  comparePassword(password, user.password)
-    .then(validPassword => {
-      if (!validPassword) {
-        logger.error('Invalid password');
-        throw errors.loginError('Username or password invalid');
-      }
-      return generateToken({ email });
-    })
-    .then(token => res.send({ token }))
+exports.logIn = ({ body: { code } }, res, next) =>
+  getToken(code)
+    .then(tokenData => res.send(tokenData))
     .catch(next);
