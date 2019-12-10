@@ -1,6 +1,5 @@
 const errors = require('../errors');
 const logger = require('../logger');
-const { camelCaseToSnakeCase } = require('../helpers/strings');
 
 const DEFAULT_STATUS_CODE = 500;
 
@@ -24,9 +23,8 @@ exports.handle = (error, req, res, next) => {
     res.status(error.status || DEFAULT_STATUS_CODE);
   }
   logger.error(error);
-  const internalCode = error.internalCode || camelCaseToSnakeCase(error.name);
   return res.send({
     message: error.message,
-    internal_code: internalCode
+    internal_code: error.internalCode || error.code
   });
 };
