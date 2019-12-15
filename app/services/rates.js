@@ -4,14 +4,18 @@ const errors = require('../errors');
 const Rate = require('../models').rates;
 const logger = require('../logger');
 
-exports.createRate = (newRate, transaction) => {
-  console.log('newRate', newRate);
-  Rate.create(
-    newRate,
-    { fields: ['rating_user_id', 'weet_id', 'score'], updateOnDuplicate: ['rating_user_id', 'weet_id'] },
-    { transaction }
-  ).catch(err => {
-    logger.error(inspect(err));
-    throw errors.databaseError('Error when trying to create rate');
-  });
-};
+exports.createRate = (newRate, transaction) =>
+  Rate.findOne({ where: { weetId: newRate.weetId, ratingUserId: newRate.ratingUserId } }, { transaction })
+    .then(rate => {
+      console.log('insterting');
+      if (rate) {
+        rate.update(newRate, { transaction });
+        return;
+      }
+      console.log('updating');
+      Rate.create(newRate, { transaction });
+    })
+    .catch(err => {
+      logger.error(inspect(err));
+      throw errors.databaseError('Error when trying to create rate');
+    });

@@ -17,8 +17,7 @@ exports.findBy = condition =>
     throw errors.databaseError('Error when trying to obtain user');
   });
 
-exports.updateUserScore = ({ weetId, change }, transaction) => {
-  console.log('weetId', weetId);
+exports.updateUserScore = ({ weetId, change }, transaction) =>
   Weets.findOne({ where: { id: weetId }, include: [{ model: Users, as: 'user' }] })
     .then(weet => {
       weet.user.update({ score: Number(weet.user.score) + Number(change) }, { transaction });
@@ -27,4 +26,3 @@ exports.updateUserScore = ({ weetId, change }, transaction) => {
       logger.error(err.message);
       throw errors.databaseError('Error when trying to update user score');
     });
-};
