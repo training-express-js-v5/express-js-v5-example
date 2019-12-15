@@ -25,6 +25,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      score: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       admin: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

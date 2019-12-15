@@ -1,6 +1,7 @@
 const { healthCheck } = require('./controllers/healthCheck');
 const users = require('./controllers/users');
 const weets = require('./controllers/weets');
+const rates = require('./controllers/rates');
 const schemaValidator = require('./middlewares/schemas_validator');
 const { userSignUpSchema, userLogInSchema } = require('./schemas/users');
 const { paginationSchema } = require('./schemas/pagination');
@@ -12,5 +13,5 @@ exports.init = app => {
   app.post('/users/login', [schemaValidator(userLogInSchema), checkUser], users.logIn);
   app.post('/weets', authenticate, weets.create);
   app.get('/weets', [authenticate, schemaValidator(paginationSchema)], weets.getAll);
-  app.post('/weets/rate', authenticate, weets.rate);
+  app.post('/weets/rate', authenticate, rates.create);
 };

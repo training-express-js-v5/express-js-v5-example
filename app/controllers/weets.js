@@ -12,13 +12,3 @@ exports.getAll = (req, res, next) =>
   getAllWeets(req.query.limit, req.query.page)
     .then(weets => res.send(weets))
     .catch(next);
-
-exports.rate = ({ user }, res, next) => {
-  console.log('user', user);
-  console.log('res', res);
-  getRandomFact()
-    .then(numberFact =>
-      createWeet({ content: numberFact.slice(0, 140), userId: user.id }).then(() => res.status(201).end())
-    )
-    .catch(next);
-};
