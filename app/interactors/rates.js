@@ -11,12 +11,11 @@ exports.rateWeet = async ({ weetId, score, user }) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const promisesArray = [];
+    await Promise.all([
+      createRate({ weetId, score, ratingUserId: user.id }, transaction),
+      updateUserScore({ weetId, change: score }, transaction)
+    ]);
 
-    promisesArray.push(createRate({ weetId, score, ratingUserId: user.id }, transaction));
-    promisesArray.push(updateUserScore({ weetId, change: score }, transaction));
-
-    await Promise.all(promisesArray);
     await transaction.commit();
   } catch (error) {
     await transaction.rollback();
