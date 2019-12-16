@@ -26,3 +26,9 @@ exports.authenticationError = message => internalError(message, exports.AUTHENTI
 
 exports.NUMBERS_API_ERROR = 'numbers_api_error';
 exports.numbersApiError = message => internalError(message, exports.NUMBERS_API_ERROR);
+
+exports.WEET_NOT_FOUND = 'weet_not_found';
+exports.weetNotFound = message => internalError(message, exports.WEET_NOT_FOUND);
+
+exports.TRANSACTION_ERROR = 'transaction_error';
+exports.transactionError = message => internalError(message, exports.TRANSACTION_ERROR);

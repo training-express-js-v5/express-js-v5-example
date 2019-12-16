@@ -1,24 +1,28 @@
-const errors = require('../errors');
+const { inspect } = require('util');
+
+const { transactionError } = require('../errors');
 const { sequelize } = require('../models');
-const { updateUserScore } = require('../services/users');
-const { createRate } = require('../services/rates');
+const { createOrUpdateRate } = require('../services/rates');
+const { info, error } = require('../logger');
 
-exports.rateWeet = async ({ weetId, score, user }) => {
-  if (!['-1', '0', '1'].includes(score)) {
-    throw errors.defaultError('The given score was not valid');
-  }
-
-  const transaction = await sequelize.transaction();
-
+exports.rateWeet = async ({ weet, score, user }) => {
+  let transaction = {};
   try {
-    await Promise.all([
-      createRate({ weetId, score, ratingUserId: user.id }, transaction),
-      updateUserScore({ weetId, change: score }, transaction)
-    ]);
-
+    transaction = await sequelize.transaction();
+    info('Trying to create or update rate');
+    const newRate = await createOrUpdateRate({
+      dataSearch: { ratingUserId: user.id, weetId: weet.id },
+      transaction,
+      score
+    });
+    if (newRate) {
+      await weet.user.increment('score', { by: score, transaction });
+      info('User score updated successfully');
+    }
     await transaction.commit();
-  } catch (error) {
-    await transaction.rollback();
-    throw new Error('error when rating');
+  } catch (err) {
+    error(`Error in transaction, error : ${inspect(err)}`);
+    if (transaction) await transaction.rollback();
+    throw transactionError('Error executing transaction');
   }
 };

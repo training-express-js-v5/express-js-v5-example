@@ -11,7 +11,8 @@ const statusCodes = {
   [errors.SCHEMA_ERROR]: 422,
   [errors.LOGIN_ERROR]: 401,
   [errors.AUTHENTICATION_ERROR]: 401,
-  [errors.NUMBERS_API_ERROR]: 500
+  [errors.NUMBERS_API_ERROR]: 500,
+  [errors.WEET_NOT_FOUND]: 404
 };
 
 exports.handle = (error, req, res, next) => {

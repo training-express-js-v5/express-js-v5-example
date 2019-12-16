@@ -1,6 +1,6 @@
 const { rateWeet } = require('../interactors/rates');
 
-exports.create = (req, res, next) =>
-  rateWeet({ weetId: req.body.weetId, score: req.body.score, user: req.user })
+exports.create = ({ body: { score }, user, weet }, res, next) =>
+  rateWeet({ weet, user, score })
     .then(result => res.send(result))
     .catch(next);
