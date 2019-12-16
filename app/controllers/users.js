@@ -1,8 +1,6 @@
 const logger = require('../logger');
-// const errors = require('../errors');
 const { userSerializer } = require('../serializers/users');
 const { encryptPassword } = require('../services/bcrypt');
-// const { generateToken } = require('../helpers/token');
 const { getToken } = require('../services/auth0');
 const { createUser } = require('../services/users');
 

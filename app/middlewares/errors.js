@@ -12,6 +12,7 @@ const statusCodes = {
   [errors.HASH_ERROR]: 500,
   [errors.NUMBERS_API_ERROR]: 500,
   [errors.AUTH0_SIGN_IN_ERROR]: 500,
+  [errors.AUTH0_INVALID_CODE]: 422,
   [errors.DATABASE_ERROR]: 503
 };
 

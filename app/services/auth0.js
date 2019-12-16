@@ -1,11 +1,8 @@
 const rp = require('request-promise');
 
-const { inspect } = require('util');
-
-const logger = require('../logger');
 const { domain, clientId, clientSecret, grantType } = require('../../config').common.auth0;
 const { CONTENT_TYPE_TOKEN_NAME, CONTENT_TYPE_TOKEN_VALUE } = require('../constants/auth0');
-const { auth0SignInError } = require('../errors');
+const { auth0Handle } = require('../handlers/auth0');
 
 exports.getToken = code =>
   rp({
@@ -22,7 +19,4 @@ exports.getToken = code =>
     },
     uri: `https://${domain}/oauth/token`,
     json: true
-  }).catch(err => {
-    logger.error(inspect(err));
-    throw auth0SignInError('Error login user');
-  });
+  }).catch(auth0Handle);

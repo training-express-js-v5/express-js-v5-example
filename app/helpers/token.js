@@ -3,10 +3,6 @@ const jwksRsa = require('jwks-rsa');
 
 const { domain, audience } = require('../../config').common.auth0;
 
-// exports.generateToken = payload => jwt.sign(payload, secret, { expiresIn: expirationTime });
-
-// exports.validateToken = token => jwt.verify(token, secret);
-
 const validateToken = jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
