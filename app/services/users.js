@@ -6,7 +6,7 @@ const logger = require('../logger');
 
 exports.createUser = newUser =>
   Users.create(newUser).catch(err => {
-    logger.error(err.message);
+    logger.error(inspect(err));
     throw errors.userSignupError(`Error when trying to create user with properties ${inspect(newUser)}`);
   });
 

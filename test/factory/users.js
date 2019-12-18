@@ -7,6 +7,6 @@ const modelName = 'users';
 factoryByModel(modelName, false);
 
 module.exports = {
-  create: user => factory.create(modelName, user),
-  build: user => factory.build(modelName, user)
+  create: user => factory.create(modelName, { ...user, score: 0 }),
+  build: user => factory.build(modelName, { ...user, score: 0 })
 };

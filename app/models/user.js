@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       password: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      score: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     },
     {
