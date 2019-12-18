@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Rate = sequelize.define(
-    'rates',
+  const Rating = sequelize.define(
+    'ratings',
     {
       ratingUserId: {
         type: DataTypes.INTEGER,
@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true
     }
   );
-  Rate.associate = models => {
-    Rate.belongsTo(models.weets, { as: 'weet', foreignKey: 'weetId' });
+  Rating.associate = models => {
+    Rating.belongsTo(models.weets, { as: 'weet', foreignKey: 'weetId' });
   };
-  return Rate;
+  return Rating;
 };

@@ -1,6 +1,6 @@
 const { REQUIRED_SCORE, INVALID_SCORE_ERROR, WEET_ID_ERROR_MSG } = require('../constants/errors');
 
-exports.rateSchema = {
+exports.ratingSchema = {
   score: {
     in: ['body'],
     isEmpty: {

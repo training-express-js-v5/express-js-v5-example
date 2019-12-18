@@ -1,4 +1,4 @@
-const { rateWeet } = require('../interactors/rates');
+const { rateWeet } = require('../interactors/ratings');
 
 exports.create = ({ body: { score }, user, weet }, res, next) =>
   rateWeet({ weet, user, score })

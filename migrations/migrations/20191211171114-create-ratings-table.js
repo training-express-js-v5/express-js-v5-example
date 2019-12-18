@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface
-      .createTable('rates', {
+      .createTable('ratings', {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
@@ -36,5 +36,5 @@ module.exports = {
         })
       ),
   down: queryInterface =>
-    Promise.all([queryInterface.dropTable('rates'), queryInterface.removeColumn('users', 'score')])
+    Promise.all([queryInterface.dropTable('ratings'), queryInterface.removeColumn('users', 'score')])
 };
