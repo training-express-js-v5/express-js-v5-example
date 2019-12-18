@@ -5,8 +5,8 @@ const Rate = require('../models').rates;
 const { info, error } = require('../logger');
 
 exports.createOrUpdateRate = ({ dataSearch, score, transaction }) =>
-  Rate.findOrCreate({ where: dataSearch, defaults: { ...dataSearch, score }, transaction }).then(
-    ([rate, created]) => {
+  Rate.findOrCreate({ where: dataSearch, defaults: { ...dataSearch, score }, transaction })
+    .then(([rate, created]) => {
       if (created) info('Rate created successfully');
       const differentRate = rate.score !== score;
       if (!created && differentRate) {
@@ -16,8 +16,11 @@ exports.createOrUpdateRate = ({ dataSearch, score, transaction }) =>
         });
       }
       return Promise.resolve(created || differentRate);
-    }
-  );
+    })
+    .catch(e => {
+      error(`Error when trying to create/update rate, error: ${inspect(e)}`);
+      throw errors.databaseError('Error creating rate');
+    });
 
 exports.findOneBy = (condition, options = {}) =>
   Rate.findOne({ where: condition, ...options }).catch(err => {
