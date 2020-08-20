@@ -64,7 +64,7 @@
     "testRunner": "jest-circus/runner"
   },
   "dependencies": {
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-validator": "^6.2.0",
